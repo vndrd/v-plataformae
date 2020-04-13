@@ -1,11 +1,7 @@
 <template>
     <b-container>
         <b-row>
-            <b-col lg="6">
-                <h4>Departamentos</h4>
-                <bar-chart :data="chartData" :stacked="true" :colors="['#b55']"/>
-            </b-col>
-            <b-col lg="6">
+            <b-col lg="12">
                 <h4>Departamentos</h4>
                 <highcharts :options="chartOptions"></highcharts>
             </b-col>
@@ -18,6 +14,8 @@
 </template>
 
 <script>
+//https://yaminncco.github.io/vue-sidebar-menu/#/props
+
 export default {
     name: 'Departamento',
     props: ['chartData','char2'],

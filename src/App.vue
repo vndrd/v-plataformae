@@ -1,31 +1,58 @@
 <template>
   <div id="app">
+      <sidebar-menu :menu="menu" /> 
     <div id="nav">
-      <router-link to="/">Departamentos</router-link>
+
     </div>
     <router-view/>
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+</style>
+<script>
+//      <router-link to="/">Departamentos</router-link>
+import { SidebarMenu } from 'vue-sidebar-menu'
+  export default {
+    data() {
+            return {
+                menu: [/*
+                    {
+                        header: true,
+                        title: 'Main Navigation',
+                        hiddenOnCollapse: true
+                    },*/
+                    {
+                        href: '/',
+                        title: 'General',
+                        icon: 'fa fa-chart-area'
+                    },
+                    {
+                        title: 'Por Municipios',
+                        icon: 'fa fa-chart-bar'
+                    },
+                    {
+                        title: 'Por Grupos de Contagio',
+                        icon: 'fa fa-chart-pie'
+                    },
+                    {
+                        
+                        title: 'Evolución de los Casos COVID-19',
+                        icon: 'fa fa-chart-area',
+                        /*
+                        child: [
+                            {
+                                href: '/charts/sublink',
+                                title: 'Sub Link'
+                            }
+                        ]*/
+                    }
+                ]
+            }
+        },
+  components: {
+    SidebarMenu
   }
 }
-</style>
+</script>
