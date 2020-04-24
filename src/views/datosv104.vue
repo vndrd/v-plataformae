@@ -1,13 +1,11 @@
 <template>
   <div class="container">
-    <Departamento :chartData="chartData" :char2="allofthem" v-if="false"/>
-    <Axios />
+    <Departamento :chartData="chartData" :char2="allofthem"/>
   </div>
 </template>
 <script>
 
 import Departamento from '@/components/Departamento'
-import Axios from '@/components/Axios'
 
 export default {
   name: 'Home',
@@ -15,8 +13,8 @@ export default {
     loaded: false,
     allofthem: [
       {country: 'BRASIL',
-        nroConfirmados: 22720,
-        nroDecesos: 1270,
+        nroConfirmados: 19943,
+        nroDecesos: 1074,
         nroRecuperados: 173,
         nroTests: 62985
       },
@@ -112,7 +110,7 @@ export default {
     }
   }),  
   components: {
-    Departamento, Axios
+    Departamento
   }
 }
 </script>

@@ -1,10 +1,7 @@
 <template>
     <b-container>
         <b-row>
-            <b-col lg="12">
-                <h4>Departamentos</h4>
-                <highcharts :options="chartOptions"></highcharts>
-            </b-col>
+            
             <b-col lg="12">
                 <highcharts :options="allall" v-if="actived"></highcharts>
             </b-col>
@@ -15,6 +12,12 @@
 
 <script>
 //https://yaminncco.github.io/vue-sidebar-menu/#/props
+/*
+<b-col lg="12">
+                <h4>Departamentos</h4>
+                <highcharts :options="chartOptions"></highcharts>
+            </b-col>
+*/
 
 export default {
     name: 'Departamento',
