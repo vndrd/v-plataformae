@@ -1,8 +1,15 @@
 <template>
-  <div class="container">
+  <div>
+  <b-navbar type="dark" variant="dark">
+    <b-navbar-nav>
+      <b-nav-item href="#">Covid Tracker</b-nav-item>
+    </b-navbar-nav>
+  </b-navbar>
     <Departamento :chartData="chartData" :char2="allofthem" v-if="false"/>
     <Axios />
-  </div>
+</div>
+
+  
 </template>
 <script>
 

@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-      <sidebar-menu :menu="menu" /> 
     <div id="nav">
 
     </div>
@@ -13,7 +12,8 @@
 </style>
 <script>
 //      <router-link to="/">Departamentos</router-link>
-import { SidebarMenu } from 'vue-sidebar-menu'
+//import { SidebarMenu } from 'vue-sidebar-menu'
+//      <sidebar-menu :menu="menu" /> 
   export default {
     data() {
             return {
@@ -52,7 +52,7 @@ import { SidebarMenu } from 'vue-sidebar-menu'
             }
         },
   components: {
-    SidebarMenu
+  //  SidebarMenu
   }
 }
 </script>
