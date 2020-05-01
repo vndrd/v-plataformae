@@ -5,8 +5,8 @@
 </template>
 <script>
 export default {
-    name: 'Daily',
-    props: ['days','min'],
+    name: 'ListItem',
+    props: ['days','min','countryName'],
     data() {
         return {
             actived: false,
@@ -14,16 +14,27 @@ export default {
             options: {
                 chart: {
                     type: 'area',
-                    height: 550,
+                    height: 250,
+                },
+                legend: {
+                    enable:false
+                },
+                credits: {
+                    enabled: false
                 },
                 title: {
-                    text: 'Casos'                },
+                    text: 'Casos',                
+                    align: 'right',
+                    verticalAlign: 'bottom',                
+                },
                 xAxis: {
-                    categories: []
+                    categories: [],
+                    visible:false
                 },
                 yAxis: {
                     startOnTick: false,
                     min: this.min,
+                    visible:false,
                     title: {
                         text: ''
                     }
@@ -52,12 +63,6 @@ export default {
             }
         }
     },
-    watch: {
-    // whenever question changes, this function will run
-    country: function () {
-        this.setOptions()        
-    }
-  },
     mounted: function() {
         this.setOptions()        
     },
@@ -77,11 +82,12 @@ export default {
             })
             let marker = {symbol:null}
             this.options.series.push(
-                {name: 'Confirmados', data: confirmed, marker},
-                {name: 'Activos', data: active , marker},
-                {name: 'Recuperados', data: recovered ,marker},
-                {name: 'Decesos', data: deaths ,marker},
+                {name: 'Confirmados', data: confirmed, marker,showInLegend: false},
+                {name: 'Activos', data: active , marker,showInLegend: false},
+                {name: 'Recuperados', data: recovered ,marker,showInLegend: false},
+                {name: 'Decesos', data: deaths ,marker,showInLegend: false},
             )
+            this.options.title.text = this.countryName
             this.actived = true;
         }
     },
@@ -92,3 +98,9 @@ export default {
     },
 }
 </script>
+<style lang="scss" scoped>
+    .highcharts-credit {
+        opacity:0;
+        display:none !important;
+    }
+</style>

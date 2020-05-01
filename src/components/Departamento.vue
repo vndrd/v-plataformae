@@ -1,9 +1,9 @@
 <template>
     <b-container>
         <b-row>
-            
             <b-col lg="12">
                 <highcharts :options="allall" v-if="actived"></highcharts>
+
             </b-col>
         </b-row>
 

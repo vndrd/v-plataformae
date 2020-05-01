@@ -17,19 +17,6 @@
                     <Daily v-if="activeDaily" :key="dailykey+1" :days="fromcase1" :min="0"/>
                 </b-col>
             </b-row>
-            <b-row class="mt-4">
-                
-            </b-row>
-            <b-row>
-                <b-col md="6">
-                    <h1>Desde Caso 100</h1>
-                    <Daily v-if="activeDaily" :key="dailykey+2" :days="fromcase100" :min="100"/>
-                </b-col>
-                <b-col md="6">
-                    <h1>Desde Caso 500</h1>
-                    <Daily v-if="activeDaily" :key="dailykey+3" :days="fromcase500" :min="500"/>
-                </b-col>
-            </b-row>
         </div>
     </div>    
 </template>
@@ -63,7 +50,6 @@ export default {
     },
     methods: {
         getDataPomber(){
-            console.log('getDataPomber')
             fetch("https://pomber.github.io/covid19/timeseries.json")
             .then(response => response.json())
             .then(data => {
@@ -104,7 +90,6 @@ export default {
         getCountriesMathdro() {          
             axios.get(`https://covid19.mathdro.id/api/countries`).then(
                 response => {
-                    console.log(response.data.countries)
                     let css = response.data.countries;
                     css.map(item => {
                         this.countries.push({value: item.iso3,text: item.name })
@@ -128,17 +113,6 @@ export default {
         },
         changeCountry(){
             this.getDataPomber();
-        },
-        readTextFile(file, callback) {
-            var rawFile = new XMLHttpRequest();
-            rawFile.overrideMimeType("application/json");
-            rawFile.open("GET", file, true);
-            rawFile.onreadystatechange = function() {
-                if (rawFile.readyState === 4 && rawFile.status == "200") {
-                    callback(rawFile.responseText);
-                }
-            }
-            rawFile.send(null);
         },
         fromcasen: function(n){
             let days = []
