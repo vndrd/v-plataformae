@@ -21,6 +21,9 @@ const actions =  {
                 }
                 return countries
             });
+        res.map(country => country.timeseries.map(day => {
+            day.active = day.confirmed - day.deaths - day.recovered
+        }))
         console.log("responser psoenrspeonrsposerpresponse")
         console.log(res)
         commit('setCountries',res)

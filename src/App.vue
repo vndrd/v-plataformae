@@ -10,7 +10,7 @@
             <a href="https://github.com/pomber/covid19/">API</a>
         </b-navbar-nav>
     </b-navbar>    
-    <router-view/>
+    <router-view v-if="loaded" />
   </div>
 </template>
 
@@ -21,45 +21,54 @@
 //      <router-link to="/">Departamentos</router-link>
 //import { SidebarMenu } from 'vue-sidebar-menu'
 //      <sidebar-menu :menu="menu" /> 
-  export default {
-    data() {
-            return {
-                menu: [/*
-                    {
-                        header: true,
-                        title: 'Main Navigation',
-                        hiddenOnCollapse: true
-                    },*/
-                    {
-                        href: '/',
-                        title: 'General',
-                        icon: 'fa fa-chart-area'
-                    },
-                    {
-                        title: 'Por Municipios',
-                        icon: 'fa fa-chart-bar'
-                    },
-                    {
-                        title: 'Por Grupos de Contagio',
-                        icon: 'fa fa-chart-pie'
-                    },
-                    {
-                        
-                        title: 'Evolución de los Casos COVID-19',
-                        icon: 'fa fa-chart-area',
-                        /*
-                        child: [
-                            {
-                                href: '/charts/sublink',
-                                title: 'Sub Link'
-                            }
-                        ]*/
-                    }
-                ]
-            }
-        },
-  components: {
-  //  SidebarMenu
-  }
+import { mapActions } from 'vuex'
+export default {
+data() {
+        return {
+            loaded: false,
+            menu: [/*
+                {
+                    header: true,
+                    title: 'Main Navigation',
+                    hiddenOnCollapse: true
+                },*/
+                {
+                    href: '/',
+                    title: 'General',
+                    icon: 'fa fa-chart-area'
+                },
+                {
+                    title: 'Por Municipios',
+                    icon: 'fa fa-chart-bar'
+                },
+                {
+                    title: 'Por Grupos de Contagio',
+                    icon: 'fa fa-chart-pie'
+                },
+                {
+                    
+                    title: 'Evolución de los Casos COVID-19',
+                    icon: 'fa fa-chart-area',
+                    /*
+                    child: [
+                        {
+                            href: '/charts/sublink',
+                            title: 'Sub Link'
+                        }
+                    ]*/
+                }
+            ]
+        }
+    },
+    async created(){
+        await this.fetchCountries()
+        this.loaded = true;
+    },
+methods: {
+    ...mapActions(['fetchCountries'])
+},
+components: {
+//  SidebarMenu
+}
 }
 </script>

@@ -18,13 +18,14 @@
             <b-col md="9">
                 <Daily v-if="activeDaily" 
                         :key="dailykey+1" 
-                        :days="fromcase1" :min="0"/>
+                        :days="fromcase1" 
+                        :min="0"/>
             </b-col>
         </b-row>
     </div>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import Today from '@/components/Today'
 import Daily from '@/components/Daily'
 export default {
@@ -40,34 +41,23 @@ export default {
                 name: 'Bolivia',
                 confirmed: 0,
                 recovered: 0,
-                deaths: 0,
-                active: 0,
-                lastUpdate: '',
+                    deaths: 0,
+                    active: 0,
+                    date: '',
             },
             allData: null
         }
     },
-    async created() {
-        await this.fetchCountries()
+    async mounted() {
         this.setCountry()    
-
     },
     methods: {
         setCountry() {
             this.dailykey += 1
-            let {name} = this.currentCountry;
+            const {name} = this.currentCountry;
             const {timeseries} = this.allCountries.find((country) => country.name == name)
-            const {confirmed, deaths, recovered, date:lastUpdate} = timeseries.slice(-1)[0]
-            const active = confirmed - deaths - recovered
-            this.currentCountry = { 
-                name,
-                confirmed, 
-                deaths,
-                recovered,
-                active,
-                lastUpdate,
-                timeseries
-            }
+            const last = timeseries.slice(-1)[0]
+            this.currentCountry = {...last, name, timeseries }
         },
         cambiar() {
             this.currentCountry.name = this.temporalName
@@ -82,7 +72,6 @@ export default {
             })
             return days;
         },
-        ...mapActions(['fetchCountries'])
     },
 
     computed: {

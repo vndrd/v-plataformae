@@ -1,49 +1,49 @@
 <template>
-    <div>
-        <h3 class="mt-3">{{currentCountry.name}}</h3>
-        <b-row class="mt-2">
-            <b-col md="12" class="roww">
-                <b-card
-                    title="Confirmados"
-                    class="mb-2"    >
-                    <b-card-text>
-                        <h2>{{currentCountry.confirmed}}</h2>
-                    </b-card-text>
-                </b-card>                
-                <b-card
-                    title="Recuperados"
-                    class="mb-2"    >
-                    <b-card-text>
-                        <h2>{{currentCountry.recovered}}</h2>
-                        <span class="hide2">{{porcentajeRecovered}}%</span>
-                    </b-card-text>
-                </b-card>
-                <b-card
-                    title="Fallecidos"
-                    class="mb-2"    >
-                    <b-card-text>
-                        <h2>{{currentCountry.deaths}}</h2>
-                        <span class="hide2">{{porcentajeDeaths}}%</span>
-                    </b-card-text>
-                </b-card>
-                <b-card
-                    title="Activos"
-                    class="mb-2"    >
-                    <b-card-text>
-                        <h2>{{currentCountry.active}}</h2>
-                        <span class="hide2">{{porcentajeActive}}%</span>
-                    </b-card-text>
-                </b-card>
-                <b-card
-                    title=""
-                    class="pt-2"    >
-                    <b-card-text>
-                        (Última Actualización: {{currentCountry.lastUpdate}})
-                    </b-card-text>
-                </b-card>
-            </b-col>        
-        </b-row>    
-    </div>
+<div>
+<h3 class="mt-3">{{currentCountry.name}}</h3>
+<b-row class="mt-2">
+    <b-col md="12" class="roww">
+        <b-card
+            title="Confirmados"
+            class="mb-2"    >
+            <b-card-text>
+                <h2>{{currentCountry.confirmed}}</h2>
+            </b-card-text>
+        </b-card>                
+        <b-card
+            title="Recuperados"
+            class="mb-2"    >
+            <b-card-text>
+                <h2>{{currentCountry.recovered}}</h2>
+                <span class="hide2">{{porcentajeRecovered}}%</span>
+            </b-card-text>
+        </b-card>
+        <b-card
+            title="Fallecidos"
+            class="mb-2"    >
+            <b-card-text>
+                <h2>{{currentCountry.deaths}}</h2>
+                <span class="hide2">{{porcentajeDeaths}}%</span>
+            </b-card-text>
+        </b-card>
+        <b-card
+            title="Activos"
+            class="mb-2"    >
+            <b-card-text>
+                <h2>{{currentCountry.active}}</h2>
+                <span class="hide2">{{porcentajeActive}}%</span>
+            </b-card-text>
+        </b-card>
+        <b-card
+            title=""
+            class="pt-2"    >
+            <b-card-text>
+                (Última Actualización: {{currentCountry.lastUpdate}})
+            </b-card-text>
+        </b-card>
+    </b-col>        
+</b-row>    
+</div>
 </template>
 <script>
 //<p>Última Actualización: {{currentCountry.lastUpdate}}</p>
@@ -52,7 +52,7 @@ export default {
     name: 'Today',
     props: ['currentCountry'],
     methods: {
-        porce(num){
+        porcentaje(num){
             console.log("elnum:"+num)
             let por = (num / this.currentCountry.confirmed) * 10000
             return (Math.round((por + Number.EPSILON)) / 100)
@@ -60,15 +60,15 @@ export default {
     },
     computed: {
         porcentajeActive: function(){
-            let a = this.porce(this.currentCountry.active);
+            let a = this.porcentaje(this.currentCountry.active);
             return isNaN(a) ? '': a;
         },
         porcentajeDeaths: function(){
-            let a = this.porce(this.currentCountry.deaths)
+            let a = this.porcentaje(this.currentCountry.deaths)
             return isNaN(a) ? '': a;
         },
         porcentajeRecovered: function(){
-            let a = this.porce(this.currentCountry.recovered)
+            let a = this.porcentaje(this.currentCountry.recovered)
             return isNaN(a) ? '': a;
         }
     }

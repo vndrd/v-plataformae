@@ -1,6 +1,6 @@
 <template>
     <b-col md="12">
-        <highcharts v-if="actived" 
+        <highcharts v-if="loaded" 
             :key="dailykey" 
             :options="dataComputed" />
     </b-col>    
@@ -11,7 +11,7 @@ export default {
     props: ['days','min','countryName'],
     data() {
         return {
-            actived: false,
+            loaded: false,
             dailykey: 1,
             options: {
                 chart: {
@@ -70,27 +70,30 @@ export default {
     },
     methods: {
         setOptions: function() {
-            this.actived = false;
-            this.dailykey += 1            
-            let confirmed = [] , deaths = [], active = [] , recovered = []
-            this.options.xAxis.categories = []
-            this.options.xAxis.series = []
-            this.days.map( item => {
-                this.options.xAxis.categories.push(item.date);
-                confirmed.push(item.confirmed)
-                deaths.push(item.deaths)
-                recovered.push(item.recovered)
-                active.push(item.confirmed - item.deaths - item. recovered)
-            })
-            let marker = {symbol:null}
+            this.loaded = false
+            this.dailykey += 1
+                let options = {symbol:null,showInLegend: false}
+            this.options.xAxis.categories = this.days.map(day => day.date)
             this.options.series.push(
-                {name: 'Confirmados', data: confirmed, marker,showInLegend: false},
-                {name: 'Activos', data: active , marker,showInLegend: false},
-                {name: 'Recuperados', data: recovered ,marker,showInLegend: false},
-                {name: 'Decesos', data: deaths ,marker,showInLegend: false},
+                {name: 'Confirmados', 
+                    ...options,
+                    data: this.days.map(day => day.confirmed)
+                },
+                {name: 'Activos', 
+                    ...options,
+                    data: this.days.map(day => day.active)
+                },
+                {name: 'Recuperados', 
+                    ...options,
+                    data: this.days.map(day => day.recovered)
+                },
+                {name: 'Decesos', 
+                    ...options,
+                    data: this.days.map(day => day.deaths)
+                },
             )
             this.options.title.text = this.countryName
-            this.actived = true;
+            this.loaded = true;
         }
     },
     computed: {
