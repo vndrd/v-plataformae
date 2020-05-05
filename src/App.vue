@@ -4,7 +4,7 @@
         <b-navbar-brand href="#">Covid Tracker</b-navbar-brand>
         <b-navbar-nav>
             <b-nav-item to="/">País</b-nav-item>
-            <b-nav-item to="/lista">Grupo de Países</b-nav-item>
+            <b-nav-item to="/lista">Mundo</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto">
             <a href="https://github.com/pomber/covid19/">API</a>

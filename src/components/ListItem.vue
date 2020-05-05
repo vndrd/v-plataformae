@@ -29,6 +29,7 @@ export default {
                     align: 'right',
                     verticalAlign: 'bottom',                
                 },
+                 
                 xAxis: {
                     categories: [],
                     visible:false
@@ -61,7 +62,8 @@ export default {
                             }
                         }
                     }
-                }
+                },
+                annotations: []
             }
         }
     },
@@ -73,7 +75,6 @@ export default {
             this.loaded = false
             this.dailykey += 1
                 let options = {symbol:null,showInLegend: false}
-            this.options.xAxis.categories = this.days.map(day => day.date)
             this.options.series.push(
                 {name: 'Confirmados', 
                     ...options,
@@ -92,7 +93,9 @@ export default {
                     data: this.days.map(day => day.deaths)
                 },
             )
+            this.options.xAxis.categories = this.days.map(day => day.date)
             this.options.title.text = this.countryName
+            
             this.loaded = true;
         }
     },

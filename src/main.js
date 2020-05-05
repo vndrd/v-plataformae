@@ -11,14 +11,20 @@ import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 Vue.use(VueSidebarMenu)
 // Install BootstrapVue
-
 import HighchartsVue from 'highcharts-vue'
-
 Vue.use(HighchartsVue)
+
+
 
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+
+Vue.use({
+  install() {
+    Vue.prototype.destroy = Vue.prototype.$destroy;
+  },
+});
 
 Vue.config.productionTip = false
 

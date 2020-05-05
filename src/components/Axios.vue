@@ -87,6 +87,9 @@ export default {
     components: {
         Today,
         Daily
+    },
+    beforeDestroy: function () {
+        this.allCountries.destroy()
     }
 }
 </script>

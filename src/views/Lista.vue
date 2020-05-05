@@ -2,6 +2,13 @@
   <div class="lista">
     <h1 class="mt-4 fixed">
         COVID - Mundo <span>(+100 casos)</span>
+        <b-select
+            v-model="orderByCases"
+            :options="opcionesSelect"
+            @change="changeOrderByCases"
+            required
+        >
+        </b-select>
     </h1>
     <b-container>
         <b-row>
@@ -15,7 +22,6 @@
             </b-col>
         </b-row>
     </b-container>
-
   </div>
 </template>
 <script>
@@ -26,26 +32,54 @@ export default {
         return {
             alldata: null,
             countriesData: [],
+            orderByCases: 'Recovered',
+            opcionesSelect: [
+                {value: 'Recovered',text: 'Recovered'},
+                {value: 'Active',text: 'Active'},
+                {value: 'Confirmed',text: 'Confirmed'}
+            ]
         }
     },
     mounted: function(){
-        //this.getDataPomber();
-        this.allCountries.sort((a,b) => {
-                const { confirmed:ac} = a.timeseries.slice(-1)[0]
-                const { confirmed:bc} = b.timeseries.slice(-1)[0]
-                return ac > bc ? -1: 1
-            }
-        )
+        this.orderByConfirmed();
     },
     methods: {
+        changeOrderByCases(){
+            if(this.orderByCases == 'Recovered') this.orderByRecovered()
+            if(this.orderByCases == 'Active') this.orderByActive()
+            if(this.orderByCases == 'Confirmed') this.orderByConfirmed()
+        },
+        orderByActive(){
+            this.allCountries.sort((a,b) => {
+                    const { active: aact} = a.timeseries.slice(-1)[0]
+                    const { active: bact} = b.timeseries.slice(-1)[0]
+                    return aact > bact ? -1: 1
+                }
+            )
+        },
+        orderByRecovered(){
+            this.allCountries.sort((a,b) => {
+                    const { recovered: arec} = a.timeseries.slice(-1)[0]
+                    const { recovered: brec} = b.timeseries.slice(-1)[0]
+                    return arec > brec ? -1: 1
+                }
+            )
+        },
+        orderByConfirmed(){
+            this.allCountries.sort((a,b) => {
+                    const { confirmed: acon} = a.timeseries.slice(-1)[0]
+                    const { confirmed: bcon} = b.timeseries.slice(-1)[0]
+                    return acon > bcon ? -1: 1
+                }
+            )
+        },
         getDays(data){
             return data.timeseries.filter(day => {
                 return day.confirmed > 100 ? 1 : 0
             });
         },
         masDe100Confirmados(country){
-            return  (country.timeseries.slice(-1)[0].confirmed > 100) 
-            
+            return  country.timeseries.slice(-1)[0].confirmed > 100 
         },
         cambiando(){
             alert("Hyer")
@@ -62,6 +96,9 @@ export default {
     computed: mapGetters(['allCountries']),
     components: {
         ListItem
+    },
+    beforeDestroy: function () {
+        this.allCountries = []
     }
 }
 </script>
@@ -74,6 +111,11 @@ h1  {
         font-size: 1rem;
         font-weight: bold;
         color:#888;
+    }
+    select {
+        margin: 0 10px;
+        display: inline-block;
+        width:200px;
     }
 }
 </style>
