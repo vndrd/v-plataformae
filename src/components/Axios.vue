@@ -1,28 +1,30 @@
 <template>
-    <div>
-        <div class="m-5">
-            <b-row>
-                <b-col md="3">
-                    <b-form-select                    
-                        v-model="temporalName"
-                        :options="countries"
-                        required
-                    ></b-form-select>
-                    <b-button class="qwe" variant="secondary" @click="cambiar" v-if="showButton"> 
-                        <b-icon-arrow-right-short />
-                        </b-button>
-                    <Today :currentCountry="currentCountry" />
-                </b-col>
-                <b-col md="9">
-                    <Daily v-if="activeDaily" :key="dailykey+1" :days="fromcase1" :min="0"/>
-                </b-col>
-            </b-row>
-        </div>
-    </div>    
+    <div class="m-5">
+        <b-row>
+            <b-col md="3">
+                <b-form-select                    
+                    v-model="temporalName"
+                    :options="allNameCountries"
+                    required
+                ></b-form-select>
+                <b-button class="btn-cambiar" 
+                        variant="secondary" 
+                        v-if="showButton"
+                        @click="cambiar">
+                    <b-icon-arrow-right-short />
+                </b-button>
+                <Today :currentCountry="currentCountry" />
+            </b-col>
+            <b-col md="9">
+                <Daily v-if="activeDaily" 
+                        :key="dailykey+1" 
+                        :days="fromcase1" :min="0"/>
+            </b-col>
+        </b-row>
+    </div>
 </template>
 <script>
-//<Daily v-if="activeDaily" :key="dailykey" :days="fromday0" :min="0"/>
-import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 import Today from '@/components/Today'
 import Daily from '@/components/Daily'
 export default {
@@ -31,10 +33,10 @@ export default {
         return {
             temporalName: 'Bolivia',
             dailykey:1,
-            activeDaily: false,
+            activeDaily: true,
             countries: [{value: null, text: 'Seleccionar País'}],
             currentCountry: {
-                days: [],
+                timeseries: [],
                 name: 'Bolivia',
                 confirmed: 0,
                 recovered: 0,
@@ -45,95 +47,53 @@ export default {
             allData: null
         }
     },
-    created() {
-        this.getDataPomber();
+    async created() {
+        await this.fetchCountries()
+        this.setCountry()    
+
     },
     methods: {
-        getDataPomber(){
-            fetch("https://pomber.github.io/covid19/timeseries.json")
-            .then(response => response.json())
-            .then(data => {
-                this.allData = data
-                this.countries = []
-                for (var property in this.allData) {
-                    this.countries.push({value: property, text: property})
-                }
-                this.getCountryPomberData()    
-            });
-        },
-        getCountryPomberData() {
+        setCountry() {
             this.dailykey += 1
-            this.activeDaily = false;
-            let name = this.currentCountry.name;
-            //daily data
-            let days = this.allData[name]
-            //current data
-            let len = this.allData[this.currentCountry.name].length
-                let lastOne = this.allData[this.currentCountry.name][len-1]
-            let {confirmed, deaths, recovered, date:lastUpdate} = lastOne
-            let active = confirmed - deaths - recovered
+            let {name} = this.currentCountry;
+            const {timeseries} = this.allCountries.find((country) => country.name == name)
+            const {confirmed, deaths, recovered, date:lastUpdate} = timeseries.slice(-1)[0]
+            const active = confirmed - deaths - recovered
             this.currentCountry = { 
-                        name,
-                        confirmed, 
-                        deaths,
-                        recovered,
-                        active,
-                        lastUpdate,
-                        days
+                name,
+                confirmed, 
+                deaths,
+                recovered,
+                active,
+                lastUpdate,
+                timeseries
             }
-            this.activeDaily = true;
         },
         cambiar() {
             this.currentCountry.name = this.temporalName
-            this.getCountryPomberData();
-        },
-        getCountriesMathdro() {          
-            axios.get(`https://covid19.mathdro.id/api/countries`).then(
-                response => {
-                    let css = response.data.countries;
-                    css.map(item => {
-                        this.countries.push({value: item.iso3,text: item.name })
-                    })
-                }
-            )
-        },
-        getDataMathdro(){
-            axios.get(`https://covid19.mathdro.id/api/countries/${this.currentCountry.name}`)
-                .then(response => {
-                    this.currentCountry.recovered = response.data.recovered.value;
-                    this.currentCountry.confirmed = response.data.confirmed.value;
-                    this.currentCountry.deaths = response.data.deaths.value;                    
-                    let fecha = new Date(response.data.lastUpdate)
-                    this.currentCountry.lastUpdate = fecha.toTimeString()
-                })
-            axios.get(`https://covid19.mathdro.id/api/countries/${this.currentCountry.name}/confirmed`)
-            .then(response => {
-                this.currentCountry.active = response.data[0].active
-            })
-        },
-        changeCountry(){
-            this.getDataPomber();
+            this.setCountry();
         },
         fromcasen: function(n){
             let days = []
-            this.currentCountry.days.map( day => {
+            this.currentCountry.timeseries.map( day => {
                 if (day.confirmed > n){
                     days.push(day)
                 }
             })
             return days;
         },
+        ...mapActions(['fetchCountries'])
     },
+
     computed: {
-        fromcase500: function(){            return this.fromcasen(500)        },
-        fromcase100: function(){            return this.fromcasen(100)        },
+        ...mapGetters(['getEjemplo','allCountries','allNameCountries']),
         fromcase1: function(){            return this.fromcasen(0)        },
         fromday0: function() {
             return this.currentCountry.days
         },
         showButton: function(){
             return this.temporalName != this.currentCountry.name
-        }
+        },
     },
     components: {
         Today,
@@ -142,20 +102,20 @@ export default {
 }
 </script>
 <style lang="scss" scope>
-    h6 {
-        font-size: 3em !important;
-        text-align:center;
-    }
-    h4 {
-        text-align: center;
-    }
-    .custom-select {
-        margin-right: 10px;
-        /*width: 75% !important;*/
-    }
-    .qwe {
-        position: absolute;
-        right: 20;
-        z-index: 999;
-    }
+h6 {
+    font-size: 3em !important;
+    text-align:center;
+}
+h4 {
+    text-align: center;
+}
+.custom-select {
+    margin-right: 10px;
+    /*width: 75% !important;*/
+}
+.btn-cambiar {
+    position: absolute;
+    right: 20;
+    z-index: 999;
+}
 </style>

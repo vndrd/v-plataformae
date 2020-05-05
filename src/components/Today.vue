@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>{{currentCountry.name}}</h3>
+        <h3 class="mt-3">{{currentCountry.name}}</h3>
         <b-row class="mt-2">
             <b-col md="12" class="roww">
                 <b-card
@@ -38,7 +38,7 @@
                     title=""
                     class="pt-2"    >
                     <b-card-text>
-                        (Última Actualización{{currentCountry.lastUpdate}})
+                        (Última Actualización: {{currentCountry.lastUpdate}})
                     </b-card-text>
                 </b-card>
             </b-col>        

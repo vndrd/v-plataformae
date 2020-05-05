@@ -1,6 +1,8 @@
 <template>
     <b-col md="12">
-        <highcharts v-if="actived" :key="dailykey" :options="dataComputed" ></highcharts>
+        <highcharts v-if="actived" 
+            :key="dailykey" 
+            :options="dataComputed" />
     </b-col>    
 </template>
 <script>
