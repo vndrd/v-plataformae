@@ -26,7 +26,7 @@ export default {
                 },
                 title: {
                     text: 'Casos',                
-                    align: 'right',
+                    align: 'left',
                     verticalAlign: 'bottom',                
                 },
                  
@@ -74,7 +74,10 @@ export default {
         setOptions: function() {
             this.loaded = false
             this.dailykey += 1
-                let options = {symbol:null,showInLegend: false}
+            let options = {
+                symbol:null,
+                showInLegend: false
+            }
             this.options.series.push(
                 {name: 'Confirmados', 
                     ...options,
@@ -95,7 +98,6 @@ export default {
             )
             this.options.xAxis.categories = this.days.map(day => day.date)
             this.options.title.text = this.countryName
-            
             this.loaded = true;
         }
     },
@@ -111,4 +113,6 @@ export default {
         opacity:0;
         display:none !important;
     }
+
+
 </style>

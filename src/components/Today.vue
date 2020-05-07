@@ -46,8 +46,6 @@
 </div>
 </template>
 <script>
-//<p>Última Actualización: {{currentCountry.lastUpdate}}</p>
-
 export default {
     name: 'Today',
     props: ['currentCountry'],
@@ -79,28 +77,24 @@ export default {
     color: white;
 }
 .card:nth-child(1) {
-    /*border-left: 10px solid #6666dd !important;*/
     background: #6666dd !important;
     :hover{ 
         background: #3333aa !important;
     }
 }
 .card:nth-child(2) {
-    /*border-left: 10px solid #66dd66 !important;*/
     background: #66dd66 !important;
     :hover{
         background: #33aa33 !important;
     }
 }
 .card:nth-child(3) {
-    /*border-left: 10px solid #666 !important;*/
     background: #666 !important;
     :hover{
         background: #333 !important;
     }
 }
 .card:nth-child(4) {
-    /*border-left: 10px solid #dd6666 !important;*/
     background: #dd6666 !important;
     :hover{
         background: #aa3333 !important;

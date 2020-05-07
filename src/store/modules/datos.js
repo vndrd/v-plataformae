@@ -1,9 +1,12 @@
 //import axios from 'axios'
+const getDefaultState = () => {
+    return {
+        countriesData:  [],
+        ejemplo: 'qwe',
+    }
+}  
+const state = getDefaultState()
 
-const state =  {
-    countriesData:  [],
-    ejemplo: 'qwe',
-}
 const getters =  {
     allCountries:  state => state.countriesData,
     allNameCountries:  state => state.countriesData.map(({name}) => name),
@@ -24,13 +27,25 @@ const actions =  {
         res.map(country => country.timeseries.map(day => {
             day.active = day.confirmed - day.deaths - day.recovered
         }))
-        console.log("responser psoenrspeonrsposerpresponse")
-        console.log(res)
+        res.map(country => {
+            country.active = country.timeseries.slice(-1)[0].active
+            country.recovered = country.timeseries.slice(-1)[0].recovered
+            country.deaths = country.timeseries.slice(-1)[0].deaths
+            country.confirmed = country.timeseries.slice(-1)[0].confirmed
+        })
         commit('setCountries',res)
-    }
+    },
+    resetCartState ({ commit }) {
+        commit('resetState')
+    },
 }
 const mutations =  {
-    setCountries: (state, res) => state.countriesData = res
+    setCountries: (state, res) => state.countriesData = res ,
+     resetState (state) {
+    // Merge rather than replace so we don't lose observers
+    // https://github.com/vuejs/vuex/issues/1118
+    Object.assign(state, getDefaultState())
+  }
 }
 
 export default {
