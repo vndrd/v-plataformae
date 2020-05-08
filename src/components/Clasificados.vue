@@ -1,21 +1,36 @@
 <template>
 <div>
-<div v-for="(item, index) in clasificados" :key="index">
+    <div class="wrapper" v-if="false">
+        <div v-for="(item, index) in clasificados" :key="index" >
+            <b-row>
+                <h3 class="mt-3">
+                    +{{item.text}}
+1                </h3>
+            </b-row>
+            <b-row>
+                <b-col md="3" v-for="country in item.data" :key="country.name">
+                    <h5>{{country.name}}</h5>
+                    <h4>{{acortarNumero(country.confirmed)}}</h4>
+                    <ListItem :key="country.name" 
+                        :days="getDays(country)" 
+                        :countryName="country.name" 
+                        :min="100" 
+                        v-if="masDe100Confirmados( country )"/>
+                </b-col>        
+            </b-row>
+        </div>
+    </div>
     <b-row>
-        <h3 class="mt-3">
-            +{{item.text}}
-        </h3>
-    </b-row>
-    <b-row>
-        <b-col md="3" v-for="country in item.data" :key="country.name">
-                <ListItem :key="country.name" 
-                    :days="getDays(country)" 
-                    :countryName="country.name" 
-                    :min="100" 
-                    v-if="masDe100Confirmados( country )"/>
+        <b-col md="3" v-for="country in ordenados" :key="country.name">
+            <h5>{{country.name}}</h5>
+            <h4>{{acortarNumero(country.active)}}</h4>
+            <ListItem :key="country.name" 
+                :days="getDays(country)" 
+                :countryName="country.name" 
+                :min="100" 
+                v-if="masDe100Confirmados( country )"/>
         </b-col>        
     </b-row>
-</div>
 </div>
 </template>
 
@@ -31,7 +46,7 @@
             </b-col>
   */
 import ListItem from '@/components/ListItem'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
         name: 'Clasificados',
         data(){
@@ -50,6 +65,7 @@ export default {
         
     },
     methods: {
+        ...mapActions(['resetCartState']),
         getDays(data){
             return data.timeseries.filter(day => {
                 return day.confirmed > 100 ? 1 : 0
@@ -68,39 +84,52 @@ export default {
                 }
                 return 1;
             })
+        },
+        acortarNumero(numero){
+            if (numero > 1000000) 
+                return `${parseInt(numero / 1000000)} M`
+            if ( 1000000 > numero && numero > 9999) 
+                return `${parseInt(numero / 1000)} k`
+            return `${parseInt(numero / 100)/10} k`
         }
     },
     computed: {
         ...mapGetters(['allCountries']),
+        ordenados(){
+            let all = this.allCountries;
+            return all.sort( ({active: a},{active: b}) => {return a > b ? -1: 1 })
+        },
         clasificados(){
+            let all = this.allCountries;
+            all.sort( ({confirmed: a},{confirmed: b}) => {return a > b ? -1: 1 })
         return [
             {
                 text: '1M', 
-                data: this.allCountries.filter(({confirmed}) => 
+                data: all.filter(({confirmed}) => 
                      confirmed > 1000000 
                 ),
             },
             {
                 text: '100.000', 
-                data: this.allCountries.filter(({confirmed}) => 
+                data: all.filter(({confirmed}) => 
                     1000000 > confirmed && confirmed> 100000
                 )
             },
             {
                 text: '10.000', 
-                data: this.allCountries.filter(({confirmed}) => 
+                data: all.filter(({confirmed}) => 
                     100000 > confirmed && confirmed> 10000
                 )
             },
             {
                 text: '1.000', 
-                data: this.allCountries.filter(({confirmed}) => 
+                data: all.filter(({confirmed}) => 
                     10000 > confirmed && confirmed> 1000
                 )
             },
             {
                 text: '100', 
-                data: this.allCountries.filter(({confirmed}) => 
+                data: all.filter(({confirmed}) => 
                     1000 > confirmed && confirmed > 100
                 )
             }
@@ -113,6 +142,7 @@ export default {
     },
     beforeDestroy: function () {
         this.clasificados = []
+        this.resetCartState();
     }
 }
 </script>
@@ -140,5 +170,27 @@ h1  {
         display: inline-block;
         width:200px;
     }
+}
+h4 {
+    position: absolute;
+    z-index:9999999;
+    left:40px;
+    top:70px;
+    font-weight: bold;
+    font-size: 1rem;
+    padding-left: 10px;
+    border-left: rgba(255,0,0,.3) solid 4px;
+}
+
+h5 {
+    padding: 5px 20px;
+    border-radius: 0px 20px 20px 0px;
+    background: rgba(1,1,1,.5);
+    color:#fff;
+    left:40px;
+    top:30px;
+    position: absolute;
+    z-index:9999999;
+    
 }
 </style>

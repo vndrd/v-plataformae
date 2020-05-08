@@ -25,7 +25,7 @@ export default {
                     enabled: false
                 },
                 title: {
-                    text: 'Casos',                
+                    text: '',                
                     align: 'left',
                     verticalAlign: 'bottom',                
                 },
@@ -97,7 +97,7 @@ export default {
                 },
             )
             this.options.xAxis.categories = this.days.map(day => day.date)
-            this.options.title.text = this.countryName
+//            this.options.title.text = this.countryName
             this.loaded = true;
         }
     },
