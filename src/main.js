@@ -29,8 +29,22 @@ Vue.use({
 Vue.config.productionTip = false
 
 
-new Vue({
+var appp = new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
+router.beforeEach((to, from, next) => {
+  appp.$store.commit('setLoading', true)
+
+  // Simulate request
+  setTimeout(() => {
+    next();
+  }, 1000)
+  
+});
+
+router.afterEach(() => {
+  appp.$store.commit('setLoading', false)
+});

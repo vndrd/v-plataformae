@@ -109,10 +109,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    .highcharts-credit {
-        opacity:0;
-        display:none !important;
-    }
-
-
+.highcharts-credit {
+    opacity:0;
+    display:none !important;
+}
 </style>

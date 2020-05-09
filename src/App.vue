@@ -9,7 +9,8 @@
         <b-navbar-nav class="ml-auto">
             <a href="https://github.com/pomber/covid19/">API</a>
         </b-navbar-nav>
-    </b-navbar>    
+    </b-navbar>
+    <LoadingBar />
     <router-view v-if="loaded" />
   </div>
 </template>
@@ -18,10 +19,8 @@
 
 </style>
 <script>
-//      <router-link to="/">Departamentos</router-link>
-//import { SidebarMenu } from 'vue-sidebar-menu'
-//      <sidebar-menu :menu="menu" /> 
 import { mapActions } from 'vuex'
+import LoadingBar from '@/components/loadingbar.vue'
 export default {
 data() {
         return {
@@ -64,11 +63,11 @@ data() {
         await this.fetchCountries()
         this.loaded = true;
     },
-methods: {
-    ...mapActions(['fetchCountries'])
-},
-components: {
-//  SidebarMenu
-}
+    methods: {
+        ...mapActions(['fetchCountries'])
+    },
+    components: {
+        LoadingBar
+    }
 }
 </script>

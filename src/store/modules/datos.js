@@ -2,7 +2,7 @@
 const getDefaultState = () => {
     return {
         countriesData:  [],
-        ejemplo: 'qwe',
+        loading: false,
     }
 }  
 const state = getDefaultState()
@@ -10,7 +10,7 @@ const state = getDefaultState()
 const getters =  {
     allCountries:  state => state.countriesData,
     allNameCountries:  state => state.countriesData.map(({name}) => name),
-    getEjemplo:         state => state.ejemplo,
+    getLoading:         state => state.loading,
 }
 const actions =  {
     async fetchCountries({commit}){
@@ -40,12 +40,13 @@ const actions =  {
     },
 }
 const mutations =  {
-    setCountries: (state, res) => state.countriesData = res ,
-     resetState (state) {
+    setCountries: (state, res) => state.countriesData = res,
+    setLoading: (state, bool) => state.loading = bool,
+    resetState (state) {
     // Merge rather than replace so we don't lose observers
     // https://github.com/vuejs/vuex/issues/1118
-    Object.assign(state, getDefaultState())
-  }
+        Object.assign(state, getDefaultState())
+    }
 }
 
 export default {

@@ -1,6 +1,6 @@
 <template>
   <div class="lista">
-    <h1 class="mt-4 fixed">
+    <h1 class="my-4  fixed" >
         COVID - Mundo 
         <span>(+100 casos)</span>        
     </h1>

@@ -25,7 +25,7 @@
 </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Today from '@/components/Today'
 import Daily from '@/components/Daily'
 export default {
@@ -52,6 +52,7 @@ export default {
         this.setCountry()    
     },
     methods: {
+        ...mapActions(['resetCartState']),
         setCountry() {
             this.dailykey += 1
             const {name} = this.currentCountry;
@@ -89,7 +90,7 @@ export default {
         Daily
     },
     beforeDestroy: function () {
-        this.allCountries = []
+        //this.resetCartState();
     }
 }
 </script>

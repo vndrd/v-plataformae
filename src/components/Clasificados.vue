@@ -134,15 +134,13 @@ export default {
                 )
             }
         ]
-    
         }
     },
     components: {
       ListItem
     },
     beforeDestroy: function () {
-        this.clasificados = []
-        this.resetCartState();
+        //this.resetCartState();
     }
 }
 </script>
